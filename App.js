@@ -1,12 +1,12 @@
-import { NavigationContainer, StackActions } from '@react-navigation/native';
-import { StatusBar } from 'expo-status-bar';
-import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack'
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { Home, Restaurant, OrderDelivery } from './screens';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import { Home, Restaurant, OrderDelivery } from './screens'
+const Stack = createStackNavigator();
 
-const App = () => {
+
+export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigater
@@ -15,12 +15,13 @@ const App = () => {
         }}
         initialRouteName={"Home"}
       >
-        <StackScreeen name="Home" Component={Home} />
-        <StackScreeen name="Restaurant" Component={Restaurant} />
-        <StackScreeen name="OrderDelivery" Component={OrderDelivery} />
+        <Stack.Screen name="Home" Component={Home} />
+        <Stack.Screen name="Restaurant" Component={Restaurant} />
+        <Stack.Screen name="OrderDelivery" Component={OrderDelivery} />
       </Stack.Navigater>
     </NavigationContainer>
 
   )
 }
-export default App;
+
+
