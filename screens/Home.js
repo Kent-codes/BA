@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
+import * as Location from 'expo-location';
 import {
     SafeAreaView,
     View,
@@ -6,12 +7,43 @@ import {
     StyleSheet,
     TouchableOpacity,
     Image,
-    FlatList
+    FlatList,
+    Platform
 } from "react-native";
 
 import { icons, images, SIZES, COLORS, FONTS } from '../constants'
 
 const Home = ({ navigation }) => {
+
+    const[location, setLocation] = useState(null);
+    const [errorMsg, setErrorMsg] = useState(null);
+    let LONGITUDE;
+    let LATITUDE;
+
+    useEffect(() => {
+        (async () => {
+            let { status } = await Location.requestPermissionsAsync();
+            if (status !== 'granted') {
+                setErrorMsg('Permission to access location was denied');
+                return;
+            }
+
+            let location = await Location.getCurrentPositionAsync({});
+            setLocation(location);
+        })();
+    }, []);
+
+    let text = 'Waiting..';
+    if (errorMsg) {
+        text = errorMsg;
+    } else if (location) {
+        LATITUDE = location["coords"]["latitude"];
+        LONGITUDE = location["coords"]["longitude"];
+        // text = JSON.stringify(location);
+    }
+    // console.log(text["coords"]);
+    // console.log(text);
+    // console.log(text.latitude);
 
     // Dummy Datas
 
@@ -92,8 +124,8 @@ const Home = ({ navigation }) => {
             photo: images.burger_restaurant_1,
             duration: "30 - 45 min",
             location: {
-                latitude: 1.5347282806345879,
-                longitude: 110.35632207358996,
+                latitude: LATITUDE,
+                longitude: LONGITUDE,
             },
             courier: {
                 avatar: images.avatar_1,
