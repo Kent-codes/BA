@@ -14,12 +14,12 @@ import {
 import { icons, images, SIZES, COLORS, FONTS } from '../constants'
 
 const Home = ({ navigation }) => {
-
-    const[location, setLocation] = useState(null);
+    const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
-    let LONGITUDE;
-    let LATITUDE;
+    let LONGITUDE;//緯度
+    let LATITUDE;//経度
 
+    //位置情報取得
     useEffect(() => {
         (async () => {
             let { status } = await Location.requestPermissionsAsync();
@@ -41,69 +41,67 @@ const Home = ({ navigation }) => {
         LONGITUDE = location["coords"]["longitude"];
         // text = JSON.stringify(location);
     }
-    // console.log(text["coords"]);
-    // console.log(text);
-    // console.log(text.latitude);
-
     // Dummy Datas
 
-    const initialCurrentLocation = {
-        streetName: "Kuching",
+    const MyselfData = {
+        // Name: "Kento",
         gps: {
-            latitude: 1.5496614931250685,
-            longitude: 110.36381866919922
+            latitude: LATITUDE,
+            longitude: LONGITUDE
+            // latitude: 1.5496614931250685,
+            // longitude: 110.36381866919922
         }
     }
 
     const categoryData = [
         {
             id: 1,
-            name: "Rice",
+            name: "のんびり",
             icon: icons.rice_bowl,
         },
         {
             id: 2,
-            name: "Noodles",
+            name: "カフェ巡り",
             icon: icons.noodle,
         },
         {
             id: 3,
-            name: "Hot Dogs",
+            name: "長距離",
             icon: icons.hotdog,
         },
         {
             id: 4,
-            name: "Salads",
+            name: "ファミリー",
             icon: icons.salad,
         },
         {
             id: 5,
-            name: "Burgers",
+            name: "坂",
             icon: icons.hamburger,
         },
         {
             id: 6,
-            name: "Pizza",
+            name: "週末ライド",
             icon: icons.pizza,
         },
         {
             id: 7,
-            name: "Snacks",
+            name: "山",
             icon: icons.fries,
         },
         {
             id: 8,
-            name: "Sushi",
+            name: "海沿い",
             icon: icons.sushi,
         },
         {
             id: 9,
-            name: "Desserts",
+            name: "イベント",
             icon: icons.donut,
         },
         {
             id: 10,
-            name: "Drinks",
+            name: "自転車を語る",
             icon: icons.drink,
         },
 
@@ -124,8 +122,8 @@ const Home = ({ navigation }) => {
             photo: images.burger_restaurant_1,
             duration: "30 - 45 min",
             location: {
-                latitude: LATITUDE,
-                longitude: LONGITUDE,
+                latitude: 1.556306570595712,
+                longitude: 110.35504616746915,
             },
             courier: {
                 avatar: images.avatar_1,
@@ -364,12 +362,44 @@ const Home = ({ navigation }) => {
 
     ]
 
+    const ridersData = [
+        {
+            id: 1,
+            name: "順調",
+            rating: 4.8,
+            location: {
+                latitude: 1.556306570595712,
+                longitude: 110.35504616746915,
+            },
+            courier: {
+                name: "Amy",
+                avatar: images.avatar_1
+            }
+        },
+        {
+            id: 2,
+            name: "そろそろ休みたい",
+            rating: 4.8,
+            location: {
+                latitude: 1.556306570595712,
+                longitude: 110.35504616746915,
+            },
+            courier: {
+                name: "Jackson",
+                avatar: images.avatar_2
+            },
+
+        }
+
+    ]
+
     const [categories, setCategories] = React.useState(categoryData)
     const [selectedCategory, setSelectedCategory] = React.useState(null)
     const [restaurants, setRestaurants] = React.useState(restaurantData)
-    const [currentLocation, setCurrentLocation] = React.useState(initialCurrentLocation)
-
-
+    
+    //ridemap用データ
+    const [currentLocation, setCurrentLocation] = React.useState(MyselfData)
+console.log(currentLocation);
     function onSelectCategory(category) {
         //filter restaurant
         let restaurantList = restaurantData.filter(a => a.categories.includes(category.id))
@@ -387,6 +417,19 @@ const Home = ({ navigation }) => {
 
         return ""
     }
+    function getRideMapData() {
+        // let restaurantList = restaurantData.filter(a => a.categories.includes(2))
+             
+        let item  = ridersData[0];
+        // let currentLocation = initialCurrentLocation;
+        // console.log(item);
+        // setRestaurant(item)
+        let mylocation = currentLocation
+        navigation.navigate("RideMap", {
+            restaurant: item,
+            currentLocation: mylocation
+        })
+    }
 
     function renderHeader() {
         return (
@@ -396,15 +439,17 @@ const Home = ({ navigation }) => {
                         width: 50,
                         paddingLeft: SIZES.padding * 2,
                         justifyContent: 'center'
-                    }}
+                    }} onPress={() => getRideMapData()}
+
                 >
                     <Image
                         source={icons.nearby}
                         resizeMode="contain"
                         style={{
-                            width: 30,
+                            width: 40,
                             height: 30
                         }}
+
                     />
                 </TouchableOpacity>
 

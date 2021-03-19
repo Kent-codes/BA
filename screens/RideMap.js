@@ -10,7 +10,7 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import MapViewDirections from "react-native-maps-directions";
 import { COLORS, FONTS, icons, SIZES, GOOGLE_API_KEY } from "../constants"
 
-const OrderDelivery = ({ route, navigation }) => {
+const RideMap = ({ route, navigation }) => {
 
     const mapView = React.useRef()
 
@@ -26,11 +26,12 @@ const OrderDelivery = ({ route, navigation }) => {
 
     React.useEffect(() => {
         let { restaurant, currentLocation } = route.params;
-
         let fromLoc = currentLocation.gps
+        // let toLoc = restaurant[1].location
+        // console.log("restaurant =>", restaurant);
         let toLoc = restaurant.location
         let street = currentLocation.streetName
-
+        console.log("toloc =>",toLoc);
         let mapRegion = {
             latitude: (fromLoc.latitude + toLoc.latitude) / 2,
             longitude: (fromLoc.longitude + toLoc.longitude) / 2,
@@ -93,25 +94,25 @@ const OrderDelivery = ({ route, navigation }) => {
                         borderRadius: 20,
                         alignItems: 'center',
                         justifyContent: 'center',
-                        backgroundColor: COLORS.white
+                        backgroundColor: '#54e346'
                     }}
                 >
                     <View
                         style={{
-                            height: 30,
-                            width: 30,
+                            height: 32,
+                            width: 32,
                             borderRadius: 15,
                             alignItems: 'center',
                             justifyContent: 'center',
-                            backgroundColor: COLORS.primary
+                            backgroundColor: COLORS.white
                         }}
                     >
                         <Image
-                            source={icons.pin}
+                            source={restaurant?.courier.avatar}
                             style={{
-                                width: 25,
-                                height: 25,
-                                tintColor: COLORS.white
+                                width: 27,
+                                height: 27,
+                                // tintColor: COLORS.white
                             }}
                         />
                     </View>
@@ -380,4 +381,4 @@ const OrderDelivery = ({ route, navigation }) => {
     )
 }
 
-export default OrderDelivery;
+export default RideMap;

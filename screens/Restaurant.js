@@ -18,12 +18,14 @@ const Restaurant = ({ route, navigation }) => {
     const [restaurant, setRestaurant] = React.useState(null);
     const [currentLocation, setCurrentLocation] = React.useState(null);
     const [orderItems, setOrderItems] = React.useState([]);
-
+   
     React.useEffect(() => {
         let { item, currentLocation } = route.params;
-
+       
         setRestaurant(item)
         setCurrentLocation(currentLocation)
+        // console.log("check itm ",item);
+
     })
 
     function editOrder(action, menuId, price) {
@@ -396,7 +398,7 @@ const Restaurant = ({ route, navigation }) => {
                                 alignItems: 'center',
                                 borderRadius: SIZES.radius
                             }}
-                            onPress={() => navigation.navigate("OrderDelivery", {
+                            onPress={() => navigation.navigate("RideMap", {
                                 restaurant: restaurant,
                                 currentLocation: currentLocation
                             })}
