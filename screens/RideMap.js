@@ -90,8 +90,10 @@ const RideMap = ({ route, navigation }) => {
     function renderMap() {
         const ridersMarker = () => (
             riderInfo?.map(el => (
+
                 <Marker
                     coordinate={el.location}
+                    onPress={() => renderDeliveryInfo(el.id)}
                 >
                     <View
                         style={{
@@ -103,25 +105,26 @@ const RideMap = ({ route, navigation }) => {
                             backgroundColor: '#54e346'
                         }}
                     >
-                        <View
-                            style={{
-                                height: 32,
-                                width: 32,
-                                borderRadius: 15,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                backgroundColor: COLORS.white
-                            }}
-                        >
-                            <Image
-                                source={el?.icon.avatar}
+                            <View
                                 style={{
-                                    width: 27,
-                                    height: 27,
-                                    // tintColor: COLORS.white
+                                    height: 32,
+                                    width: 32,
+                                    borderRadius: 15,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    backgroundColor: COLORS.white
                                 }}
-                            />
-                        </View>
+                            >
+                                <Image
+                                    source={el?.icon.avatar}
+                                    style={{
+                                        width: 27,
+                                        height: 27,
+                                        // tintColor: COLORS.white
+                                    }}
+                                />
+                            </View>
+                        
                     </View>
                 </Marker>
             )
@@ -263,7 +266,11 @@ const RideMap = ({ route, navigation }) => {
         )
     }
 
-    function renderDeliveryInfo() {
+    function renderDeliveryInfo(selectedId) {
+        
+        const selectedRider = riderInfo?.filter(rider => rider.id == selectedId)
+        
+        console.log(selectedRider[0].icon)
         return (
             <View
                 style={{
@@ -287,7 +294,7 @@ const RideMap = ({ route, navigation }) => {
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         {/* Avatar */}
                         <Image
-                            source={riderInfo?.icon.avatar}
+                            source={selectedRider[0]?.icon.avatar}
                             style={{
                                 width: 50,
                                 height: 50,
@@ -298,18 +305,18 @@ const RideMap = ({ route, navigation }) => {
                         <View style={{ flex: 1, marginLeft: SIZES.padding }}>
                             {/* Name & Rating */}
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                <Text style={{ ...FONTS.h4 }}>{restaurant?.icon.name}</Text>
+                                <Text style={{ ...FONTS.h4 }}>{selectedRider[0]?.icon.name}</Text>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Image
                                         source={icons.star}
                                         style={{ width: 18, height: 18, tintColor: COLORS.primary, marginRight: SIZES.padding }}
                                     />
-                                    <Text style={{ ...FONTS.body3 }}>{restaurant?.rating}</Text>
+                                    <Text style={{ ...FONTS.body3 }}>{selectedRider[0]?.rating}</Text>
                                 </View>
                             </View>
 
                             {/* Restaurant */}
-                            <Text style={{ color: COLORS.darkgray, ...FONTS.body4 }}>{restaurant?.name}</Text>
+                            <Text style={{ color: COLORS.darkgray, ...FONTS.body4 }}>{selectedRider[0]?.name}</Text>
                         </View>
                     </View>
 
