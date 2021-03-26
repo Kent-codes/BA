@@ -46,10 +46,10 @@ const Home = ({ navigation }) => {
     const MyselfData = {
         // Name: "Kento",
         gps: {
-            latitude: LATITUDE,
-            longitude: LONGITUDE
-            // latitude: 1.5496614931250685,
-            // longitude: 110.36381866919922
+            // latitude: LATITUDE,
+            // longitude: LONGITUDE
+            latitude: 1.5496614931250685,
+            longitude: 110.36381866919922
         }
     }
 
@@ -125,7 +125,7 @@ const Home = ({ navigation }) => {
                 latitude: 1.556306570595712,
                 longitude: 110.35504616746915,
             },
-            courier: {
+            icon: {
                 avatar: images.avatar_1,
                 name: "Amy"
             },
@@ -168,7 +168,7 @@ const Home = ({ navigation }) => {
                 latitude: 1.556306570595712,
                 longitude: 110.35504616746915,
             },
-            courier: {
+            icon: {
                 avatar: images.avatar_2,
                 name: "Jackson"
             },
@@ -219,7 +219,7 @@ const Home = ({ navigation }) => {
                 latitude: 1.5238753474714375,
                 longitude: 110.34261833833622,
             },
-            courier: {
+            icon: {
                 avatar: images.avatar_3,
                 name: "James"
             },
@@ -246,7 +246,7 @@ const Home = ({ navigation }) => {
                 latitude: 1.5578068150528928,
                 longitude: 110.35482523764315,
             },
-            courier: {
+            icon: {
                 avatar: images.avatar_4,
                 name: "Ahmad"
             },
@@ -273,7 +273,7 @@ const Home = ({ navigation }) => {
                 latitude: 1.558050496260768,
                 longitude: 110.34743759630511,
             },
-            courier: {
+            icon: {
                 avatar: images.avatar_4,
                 name: "Muthu"
             },
@@ -326,7 +326,7 @@ const Home = ({ navigation }) => {
                 latitude: 1.5573478487252896,
                 longitude: 110.35568783282145,
             },
-            courier: {
+            icon: {
                 avatar: images.avatar_1,
                 name: "Jessie"
             },
@@ -371,7 +371,7 @@ const Home = ({ navigation }) => {
                 latitude: 1.556306570595712,
                 longitude: 110.35504616746915,
             },
-            courier: {
+            icon: {
                 name: "Amy",
                 avatar: images.avatar_1
             }
@@ -381,10 +381,10 @@ const Home = ({ navigation }) => {
             name: "そろそろ休みたい",
             rating: 4.8,
             location: {
-                latitude: 1.556306570595712,
-                longitude: 110.35504616746915,
+                latitude: 1.558050496260768,
+                longitude: 110.34743759630511
             },
-            courier: {
+            icon: {
                 name: "Jackson",
                 avatar: images.avatar_2
             },
@@ -396,10 +396,9 @@ const Home = ({ navigation }) => {
     const [categories, setCategories] = React.useState(categoryData)
     const [selectedCategory, setSelectedCategory] = React.useState(null)
     const [restaurants, setRestaurants] = React.useState(restaurantData)
-    
+
     //ridemap用データ
     const [currentLocation, setCurrentLocation] = React.useState(MyselfData)
-console.log(currentLocation);
     function onSelectCategory(category) {
         //filter restaurant
         let restaurantList = restaurantData.filter(a => a.categories.includes(category.id))
@@ -419,13 +418,12 @@ console.log(currentLocation);
     }
     function getRideMapData() {
         // let restaurantList = restaurantData.filter(a => a.categories.includes(2))
-             
-        let item  = ridersData[0];
-        // let currentLocation = initialCurrentLocation;
-        // console.log(item);
-        // setRestaurant(item)
-        let mylocation = currentLocation
+        // let item = ridersData[0];//riders一人
+        let item = ridersData;//riders二人以上array
+        let mylocation = currentLocation//ユーザー自身（位置情報だけ）
         navigation.navigate("RideMap", {
+            // Ridersdata: item,
+            // Mydata: mylocation
             restaurant: item,
             currentLocation: mylocation
         })
@@ -539,9 +537,7 @@ console.log(currentLocation);
 
         return (
             <View style={{ padding: SIZES.padding * 2 }}>
-                <Text style={{ ...FONTS.h1 }}>Main</Text>
-                <Text style={{ ...FONTS.h1 }}>Categories</Text>
-
+                <Text style={{ ...FONTS.h1 }}>現在公開中のライド</Text>
                 <FlatList
                     data={categories}
                     horizontal

@@ -1,4 +1,4 @@
-import React from "react";
+import  React,{ useState, useEffect ,useRef} from 'react';
 import {
     View,
     Text,
@@ -12,125 +12,141 @@ import { COLORS, FONTS, icons, SIZES, GOOGLE_API_KEY } from "../constants"
 
 const RideMap = ({ route, navigation }) => {
 
-    const mapView = React.useRef()
+    const mapView = useRef()
 
-    const [restaurant, setRestaurant] = React.useState(null)
-    const [streetName, setStreetName] = React.useState("")
-    const [fromLocation, setFromLocation] = React.useState(null)
-    const [toLocation, setToLocation] = React.useState(null)
-    const [region, setRegion] = React.useState(null)
+    const [riderInfo, setRiderInfo] = useState(null)
+    const [streetName, setStreetName] = useState("")
+    const [mylocation, setMyLocation] = useState(null)
+    const [riderLocation, setRiderLocation] = useState(null)
+    const [riderIcon, setRiderIcon] = useState(null)
+    const [region, setRegion] = useState(null)
 
-    const [duration, setDuration] = React.useState(0)
-    const [isReady, setIsReady] = React.useState(false)
-    const [angle, setAngle] = React.useState(0)
+    const [duration, setDuration] = useState(0)
+    const [isReady, setIsReady] = useState(false)
+    const [angle, setAngle] = useState(0)
 
-    React.useEffect(() => {
-        let { restaurant, currentLocation } = route.params;
-        let fromLoc = currentLocation.gps
-        // let toLoc = restaurant[1].location
-        // console.log("restaurant =>", restaurant);
-        let toLoc = restaurant.map(el => el.location)
-        let street = currentLocation.streetName
-        console.log("toloc =>", toLoc);
+    useEffect(() => {
+        let { Ridersdata, Mydata } = route.params;
+        console.log("prams=> ", Ridersdata, typeof (Ridersdata));
+        // Object.entries(obj).map(([key, value]) => ({key, value}))
+        // let { icon, id, location,status_txt, rating } = Ridersdata[0];
+        // console.log("icon=> ", icon);
+        // setRiderInfo(Ridersdata)
+        // console.log("riderinfo=> ", riderInfo);
+        //ユーザーたちの位置情報セット
+        let myLoc = Mydata.gps;
+        let ridersLoc = Ridersdata.map(el => el.location);
+        let ridersIcon = Ridersdata.map(el => el.icon);
+        
+        let street = Mydata.streetName;
+       
+        
+        //マップの縮尺セット
+        // todo turn it to a function
         let mapRegion = {
-            // latitude: (fromLoc.latitude + toLoc.latitude) / 2,
-            // longitude: (fromLoc.longitude + toLoc.longitude) / 2,
-            // latitudeDelta: Math.abs(fromLoc.latitude - toLoc.latitude) * 2,
-            // longitudeDelta: Math.abs(fromLoc.longitude - toLoc.longitude) * 2
-            latitude: (fromLoc.latitude + toLoc[0].latitude + toLoc[1].latitude) / 2,
-            longitude: (fromLoc.longitude + toLoc[0].longitude + toLoc[1].longitude) / 2,
-            latitudeDelta: Math.abs(fromLoc.latitude - toLoc[0].latitude - toLoc[1].latitude) * 2,
-            longitudeDelta: Math.abs(fromLoc.longitude - toLoc[0].longitude - toLoc[1].latitude) * 2
+            // latitude: (myLoc.latitude + ridersLoc.latitude) / 2,
+            // longitude: (myLoc.longitude + ridersLoc.longitude) / 2,
+            // latitudeDelta: Math.abs(myLoc.latitude - ridersLoc.latitude) * 2,
+            // longitudeDelta: Math.abs(myLoc.longitude - ridersLoc.longitude) * 2
+            latitude: (myLoc.latitude + ridersLoc[0].latitude + ridersLoc[1].latitude) / 2,
+            longitude: (myLoc.longitude + ridersLoc[0].longitude + ridersLoc[1].longitude) / 2,
+            latitudeDelta: Math.abs(myLoc.latitude - ridersLoc[0].latitude - ridersLoc[1].latitude) * 2,
+            longitudeDelta: Math.abs(myLoc.longitude - ridersLoc[0].longitude - ridersLoc[1].latitude) * 2
         }
-
-        setRestaurant(restaurant)
+        
+        setRiderLocation(ridersLoc)
+        setRiderIcon(ridersIcon)
+        // console.log("ridersLoc =>", riderLocation);
+        // console.log("ridersIcon =>", riderIcon);
+        setRiderInfo(Ridersdata)
         setStreetName(street)
-        setFromLocation(fromLoc)
-        setToLocation(toLoc)
+        setMyLocation(myLoc)
         setRegion(mapRegion)
 
     }, [])
 
-    // function calculateAngle(coordinates) {
-    //     let startLat = coordinates[0]["latitude"]
-    //     let startLng = coordinates[0]["longitude"]
-    //     let endLat = coordinates[1]["latitude"]
-    //     let endLng = coordinates[1]["longitude"]
-    //     let dx = endLat - startLat
-    //     let dy = endLng - startLng
+    function calculateAngle(coordinates) {
+        let startLat = coordinates[0]["latitude"]
+        let startLng = coordinates[0]["longitude"]
+        let endLat = coordinates[1]["latitude"]
+        let endLng = coordinates[1]["longitude"]
+        let dx = endLat - startLat
+        let dy = endLng - startLng
 
-    //     return Math.atan2(dy, dx) * 180 / Math.PI
-    // }
+        return Math.atan2(dy, dx) * 180 / Math.PI
+    }
 
-    // function zoomIn() {
-    //     let newRegion = {
-    //         latitude: region.latitude,
-    //         longitude: region.longitude,
-    //         latitudeDelta: region.latitudeDelta / 2,
-    //         longitudeDelta: region.longitudeDelta / 2
-    //     }
+    function zoomIn() {
+        let newRegion = {
+            latitude: region.latitude,
+            longitude: region.longitude,
+            latitudeDelta: region.latitudeDelta / 2,
+            longitudeDelta: region.longitudeDelta / 2
+        }
 
-    //     setRegion(newRegion)
-    //     mapView.current.animateToRegion(newRegion, 200)
-    // }
+        setRegion(newRegion)
+        mapView.current.animateToRegion(newRegion, 200)
+    }
 
-    // function zoomOut() {
-    //     let newRegion = {
-    //         latitude: region.latitude,
-    //         longitude: region.longitude,
-    //         latitudeDelta: region.latitudeDelta * 2,
-    //         longitudeDelta: region.longitudeDelta * 2
-    //     }
+    function zoomOut() {
+        let newRegion = {
+            latitude: region.latitude,
+            longitude: region.longitude,
+            latitudeDelta: region.latitudeDelta * 2,
+            longitudeDelta: region.longitudeDelta * 2
+        }
 
-    //     setRegion(newRegion)
-    //     mapView.current.animateToRegion(newRegion, 200)
-    // }
+        setRegion(newRegion)
+        mapView.current.animateToRegion(newRegion, 200)
+    }
 
     function renderMap() {
-        const destinationMarker = () => (
-            restaurant?.map(el => (
-                <Marker
-                    coordinate={el.location}
+        const ridersMarker = () => (
+            // riderLocation.map(loc => (
+            <Marker
+                coordinate={riderLocation}
+            // coordinate={loc.location}
+            >
+                <View
+                    style={{
+                        height: 40,
+                        width: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: '#54e346'
+                    }}
                 >
                     <View
                         style={{
-                            height: 40,
-                            width: 40,
-                            borderRadius: 20,
+                            height: 32,
+                            width: 32,
+                            borderRadius: 15,
                             alignItems: 'center',
                             justifyContent: 'center',
-                            backgroundColor: '#54e346'
+                            backgroundColor: COLORS.white
                         }}
                     >
-                        <View
+                        
+                        <Image
+                            source={riderIcon[0].icon.avatar}
                             style={{
-                                height: 32,
-                                width: 32,
-                                borderRadius: 15,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                backgroundColor: COLORS.white
+                                width: 27,
+                                height: 27,
+                                // tintColor: COLORS.white
                             }}
-                        >
-                            <Image
-                                source={el?.icon.avatar}
-                                style={{
-                                    width: 27,
-                                    height: 27,
-                                    // tintColor: COLORS.white
-                                }}
-                            />
-                        </View>
+                        />
                     </View>
-                </Marker>
-            )
-            )
+                </View>
+            </Marker >
+            // )
+            // )
 
         )
 
-        const carIcon = () => (
+        const myMarker = () => (
             <Marker
-                coordinate={fromLocation}
+                coordinate={mylocation}
                 anchor={{ x: 0.5, y: 0.5 }}
                 flat={true}
                 rotation={angle}
@@ -153,9 +169,9 @@ const RideMap = ({ route, navigation }) => {
                     initialRegion={region}
                     style={{ flex: 1 }}
                 >
-                    <MapViewDirections
-                        origin={fromLocation}
-                        destination={toLocation}
+                    {/* <MapViewDirections
+                        origin={mylocation}
+                        destination={riderLocation}
                         apikey={GOOGLE_API_KEY}
                         strokeWidth={5}
                         strokeColor={COLORS.primary}
@@ -189,9 +205,9 @@ const RideMap = ({ route, navigation }) => {
                                 setIsReady(true)
                             }
                         }}
-                    />
-                    {destinationMarker()}
-                    {carIcon()}
+                    /> */}
+                    {ridersMarker()}
+                    {myMarker()}
                 </MapView>
             </View>
         )
@@ -264,7 +280,7 @@ const RideMap = ({ route, navigation }) => {
     //                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
     //                     {/* Avatar */}
     //                     <Image
-    //                         source={restaurant?.icon.avatar}
+    //                         source={riderInfo?.icon.avatar}
     //                         style={{
     //                             width: 50,
     //                             height: 50,
@@ -275,18 +291,18 @@ const RideMap = ({ route, navigation }) => {
     //                     <View style={{ flex: 1, marginLeft: SIZES.padding }}>
     //                         {/* Name & Rating */}
     //                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-    //                             <Text style={{ ...FONTS.h4 }}>{restaurant?.icon.name}</Text>
+    //                             <Text style={{ ...FONTS.h4 }}>{riderInfo?.icon.name}</Text>
     //                             <View style={{ flexDirection: 'row' }}>
     //                                 <Image
     //                                     source={icons.star}
     //                                     style={{ width: 18, height: 18, tintColor: COLORS.primary, marginRight: SIZES.padding }}
     //                                 />
-    //                                 <Text style={{ ...FONTS.body3 }}>{restaurant?.rating}</Text>
+    //                                 <Text style={{ ...FONTS.body3 }}>{riderInfo?.rating}</Text>
     //                             </View>
     //                         </View>
 
-    //                         {/* Restaurant */}
-    //                         <Text style={{ color: COLORS.darkgray, ...FONTS.body4 }}>{restaurant?.name}</Text>
+    //                         {/* rider */}
+    //                         <Text style={{ color: COLORS.darkgray, ...FONTS.body4 }}>{riderInfo?.name}</Text>
     //                     </View>
     //                 </View>
 
