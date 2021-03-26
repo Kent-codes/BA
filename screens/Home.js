@@ -41,17 +41,6 @@ const Home = ({ navigation }) => {
         LONGITUDE = location["coords"]["longitude"];
         // text = JSON.stringify(location);
     }
-    // Dummy Datas
-
-    const MyselfData = {
-        // Name: "Kento",
-        gps: {
-            // latitude: LATITUDE,
-            // longitude: LONGITUDE
-            latitude: 1.5496614931250685,
-            longitude: 110.36381866919922
-        }
-    }
 
     const categoryData = [
         {
@@ -362,6 +351,21 @@ const Home = ({ navigation }) => {
 
     ]
 
+    // Dummy user Data
+    const MyselfData = {
+        location: {
+            // latitude: LATITUDE,
+            // longitude: LONGITUDE
+            latitude: 1.5496614931250685,
+            longitude: 110.36381866919922
+
+        },
+        icon: {
+            name: "Kent",
+            avatar: images.avatar_3
+        }
+    }
+    // Dummy other users Data
     const ridersData = [
         {
             id: 1,
@@ -398,7 +402,8 @@ const Home = ({ navigation }) => {
     const [restaurants, setRestaurants] = React.useState(restaurantData)
 
     //ridemap用データ
-    const [currentLocation, setCurrentLocation] = React.useState(MyselfData)
+    const [currentLocation, setCurrentLocation] = React.useState(MyselfData.location)
+    const [myData, setMyData] = React.useState(MyselfData)
     function onSelectCategory(category) {
         //filter restaurant
         let restaurantList = restaurantData.filter(a => a.categories.includes(category.id))
@@ -420,12 +425,12 @@ const Home = ({ navigation }) => {
         // let restaurantList = restaurantData.filter(a => a.categories.includes(2))
         // let item = ridersData[0];//riders一人
         let item = ridersData;//riders二人以上array
-        let mylocation = currentLocation//ユーザー自身（位置情報だけ）
+        // let mylocation = currentLocation//ユーザー自身（位置情報だけ）
+        let myitem = myData//ユーザー自身（位置情報、アイコン、名前）
+
         navigation.navigate("RideMap", {
-            // Ridersdata: item,
-            // Mydata: mylocation
-            restaurant: item,
-            currentLocation: mylocation
+            ridersdata: item,
+            mydata: myitem
         })
     }
 
