@@ -15,6 +15,9 @@ const RideMap = ({ route, navigation }) => {
     const mapView = React.useRef()
 
     const [riderInfo, setRiderInfo] = React.useState(null)
+    const [riderSelected, setRiderSelected] = React.useState(null)
+    // const [riderId, setRiderId] = React.useState(null)
+
     const [myInfo, setMyInfo] = React.useState(null)
     const [myLocation, setMyLocation] = React.useState(null)
     const [streetName, setStreetName] = React.useState("")
@@ -93,7 +96,7 @@ const RideMap = ({ route, navigation }) => {
 
                 <Marker
                     coordinate={el.location}
-                    onPress={() => renderDeliveryInfo(el.id)}
+                    onPress={() => setRiderSelected(el.id) }
                 >
                     <View
                         style={{
@@ -105,26 +108,26 @@ const RideMap = ({ route, navigation }) => {
                             backgroundColor: '#54e346'
                         }}
                     >
-                            <View
+                        <View
+                            style={{
+                                height: 32,
+                                width: 32,
+                                borderRadius: 15,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                backgroundColor: COLORS.white
+                            }}
+                        >
+                            <Image
+                                source={el?.icon.avatar}
                                 style={{
-                                    height: 32,
-                                    width: 32,
-                                    borderRadius: 15,
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    backgroundColor: COLORS.white
+                                    width: 27,
+                                    height: 27,
+                                    // tintColor: COLORS.white
                                 }}
-                            >
-                                <Image
-                                    source={el?.icon.avatar}
-                                    style={{
-                                        width: 27,
-                                        height: 27,
-                                        // tintColor: COLORS.white
-                                    }}
-                                />
-                            </View>
-                        
+                            />
+                        </View>
+
                     </View>
                 </Marker>
             )
@@ -178,6 +181,7 @@ const RideMap = ({ route, navigation }) => {
                     provider={PROVIDER_GOOGLE}
                     initialRegion={region}
                     style={{ flex: 1 }}
+                    
                 >
                     <MapViewDirections
                         origin={myLocation}
@@ -267,9 +271,9 @@ const RideMap = ({ route, navigation }) => {
     }
 
     function renderDeliveryInfo(selectedId) {
-        
+
         const selectedRider = riderInfo?.filter(rider => rider.id == selectedId)
-        
+
         console.log(selectedRider[0].icon)
         return (
             <View
@@ -352,71 +356,73 @@ const RideMap = ({ route, navigation }) => {
                                 justifyContent: 'center',
                                 borderRadius: 10
                             }}
-                            onPress={() => navigation.goBack()}
+                            onPress={() => setRiderSelected(null)}
                         >
                             <Text style={{ ...FONTS.h4, color: COLORS.white }}>Cancel</Text>
                         </TouchableOpacity>
                     </View>
 
                 </View>
+                
             </View>
+
         )
     }
 
-    // function renderButtons() {
-    //     return (
-    //         <View
-    //             style={{
-    //                 position: 'absolute',
-    //                 bottom: SIZES.height * 0.35,
-    //                 right: SIZES.padding * 2,
-    //                 width: 60,
-    //                 height: 130,
-    //                 justifyContent: 'space-between'
-    //             }}
-    //         >
-    //             {/* Zoom In */}
-    //             <TouchableOpacity
-    //                 style={{
-    //                     width: 60,
-    //                     height: 60,
-    //                     borderRadius: 30,
-    //                     backgroundColor: COLORS.white,
-    //                     alignItems: 'center',
-    //                     justifyContent: 'center'
-    //                 }}
-    //                 onPress={() => zoomIn()}
-    //             >
-    //                 <Text style={{ ...FONTS.body1 }}>+</Text>
-    //             </TouchableOpacity>
+// function renderButtons() {
+//     return (
+//         <View
+//             style={{
+//                 position: 'absolute',
+//                 bottom: SIZES.height * 0.35,
+//                 right: SIZES.padding * 2,
+//                 width: 60,
+//                 height: 130,
+//                 justifyContent: 'space-between'
+//             }}
+//         >
+//             {/* Zoom In */}
+//             <TouchableOpacity
+//                 style={{
+//                     width: 60,
+//                     height: 60,
+//                     borderRadius: 30,
+//                     backgroundColor: COLORS.white,
+//                     alignItems: 'center',
+//                     justifyContent: 'center'
+//                 }}
+//                 onPress={() => zoomIn()}
+//             >
+//                 <Text style={{ ...FONTS.body1 }}>+</Text>
+//             </TouchableOpacity>
 
-    //             {/* Zoom Out */}
-    //             <TouchableOpacity
-    //                 style={{
-    //                     width: 60,
-    //                     height: 60,
-    //                     borderRadius: 30,
-    //                     backgroundColor: COLORS.white,
-    //                     alignItems: 'center',
-    //                     justifyContent: 'center'
-    //                 }}
-    //                 onPress={() => zoomOut()}
-    //             >
-    //                 <Text style={{ ...FONTS.body1 }}>-</Text>
-    //             </TouchableOpacity>
-    //         </View>
+//             {/* Zoom Out */}
+//             <TouchableOpacity
+//                 style={{
+//                     width: 60,
+//                     height: 60,
+//                     borderRadius: 30,
+//                     backgroundColor: COLORS.white,
+//                     alignItems: 'center',
+//                     justifyContent: 'center'
+//                 }}
+//                 onPress={() => zoomOut()}
+//             >
+//                 <Text style={{ ...FONTS.body1 }}>-</Text>
+//             </TouchableOpacity>
+//         </View>
 
-    //     )
-    // }
+//     )
+// }
 
-    return (
-        <View style={{ flex: 1 }}>
-            {renderMap()}
-            {/* {renderDestinationHeader()} */}
-            {/* {renderDeliveryInfo()} */}
-            {/* {renderButtons()} */}
-        </View>
-    )
+return (
+    <View style={{ flex: 1 }}>
+        {renderMap()}
+        {/* {renderDestinationHeader()} */}
+        {riderSelected && renderDeliveryInfo(riderSelected)}
+        {/* {renderButtons()} */}
+    </View>
+)
 }
 
 export default RideMap;
