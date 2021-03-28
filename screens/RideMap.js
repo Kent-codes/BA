@@ -96,7 +96,7 @@ const RideMap = ({ route, navigation }) => {
 
                 <Marker
                     coordinate={el.location}
-                    onPress={() => setRiderSelected(el.id) }
+                    onPress={() => !riderSelected ? setRiderSelected(el.id) : setRiderSelected(null)}
                 >
                     <View
                         style={{
