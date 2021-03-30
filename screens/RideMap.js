@@ -9,6 +9,10 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 // import { MapView } from "expo";
 import MapViewDirections from "react-native-maps-directions";
 import { COLORS, FONTS, icons, SIZES, GOOGLE_API_KEY } from "../constants"
+import { Ionicons } from '@expo/vector-icons';
+import { Fontisto } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const RideMap = ({ route, navigation }) => {
 
@@ -142,7 +146,7 @@ const RideMap = ({ route, navigation }) => {
                 flat={true}
                 rotation={angle}
             >
-                <View
+                {/* <View
                     style={{
                         height: 50,
                         width: 50,
@@ -161,16 +165,17 @@ const RideMap = ({ route, navigation }) => {
                             justifyContent: 'center',
                             backgroundColor: COLORS.white
                         }}
-                    >
-                        <Image
+                    > */}
+                        <MaterialIcons name="directions-bike" size={30} color="black" />
+                        {/* <Image
                             source={myInfo?.icon.avatar}
                             style={{
                                 width: 35,
                                 height: 35
                             }}
-                        />
-                    </View>
-                </View>
+                //         /> */}
+                {/* //     </View> */}
+                {/* // </View> */}
             </Marker>
         )
 
@@ -181,7 +186,7 @@ const RideMap = ({ route, navigation }) => {
                     provider={PROVIDER_GOOGLE}
                     initialRegion={region}
                     style={{ flex: 1 }}
-                    
+
                 >
                     <MapViewDirections
                         origin={myLocation}
@@ -363,66 +368,233 @@ const RideMap = ({ route, navigation }) => {
                     </View>
 
                 </View>
-                
+
             </View>
 
         )
     }
 
-// function renderButtons() {
-//     return (
-//         <View
-//             style={{
-//                 position: 'absolute',
-//                 bottom: SIZES.height * 0.35,
-//                 right: SIZES.padding * 2,
-//                 width: 60,
-//                 height: 130,
-//                 justifyContent: 'space-between'
-//             }}
-//         >
-//             {/* Zoom In */}
-//             <TouchableOpacity
-//                 style={{
-//                     width: 60,
-//                     height: 60,
-//                     borderRadius: 30,
-//                     backgroundColor: COLORS.white,
-//                     alignItems: 'center',
-//                     justifyContent: 'center'
-//                 }}
-//                 onPress={() => zoomIn()}
-//             >
-//                 <Text style={{ ...FONTS.body1 }}>+</Text>
-//             </TouchableOpacity>
+    function renderUpperButtons() {
+        return (
+            <View
+                style={{
+                    position: 'absolute',
+                    top: SIZES.height * 0.01,
+                    // right: SIZES.padding * 0.2,
+                    // left: SIZES.padding * 0.2,
+                    width: SIZES.width,
+                    height: 70,
+                    flexDirection: 'row',
+                    // alignItems: 'baseline',
+                    justifyContent: 'space-between',
+                    // backgroundColor: COLORS.white,
 
-//             {/* Zoom Out */}
-//             <TouchableOpacity
-//                 style={{
-//                     width: 60,
-//                     height: 60,
-//                     borderRadius: 30,
-//                     backgroundColor: COLORS.white,
-//                     alignItems: 'center',
-//                     justifyContent: 'center'
-//                 }}
-//                 onPress={() => zoomOut()}
-//             >
-//                 <Text style={{ ...FONTS.body1 }}>-</Text>
-//             </TouchableOpacity>
-//         </View>
+                }}
+            >
+                {/* chat */}
+                <TouchableOpacity
+                    style={{
+                        width: 50,
+                        height: 50,
 
-//     )
-// }
+                        borderRadius: 25,
+                        backgroundColor: COLORS.white,
+                        alignItems: 'center',
+                        justifyContent: 'center',
 
-return (
-    <View style={{ flex: 1 }}>
-        {renderMap()}
-        {/* {renderDestinationHeader()} */}
-        {riderSelected && renderDeliveryInfo(riderSelected)}
-        {/* {renderButtons()} */}
-    </View>
-)
+                    }}
+                    onPress={() => navigation.navigate("Home")}                >
+
+
+                    <View
+                        style={{
+                            height: 40,
+                            width: 40,
+                            borderRadius: 20,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: COLORS.white
+                        }}
+                    >
+                        <Ionicons name="arrow-back" size={24} color="black" />
+                    </View>
+                </TouchableOpacity>
+
+                {/* message*/}
+                {/* <View
+                    style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        width: SIZES.width * 0.5,
+                        height:40,
+                        paddingVertical: SIZES.padding,
+                        paddingHorizontal: SIZES.padding * 2,
+                        borderRadius: SIZES.radius,
+                        backgroundColor: COLORS.white
+                    }}
+                >
+                    <Image
+                        source={icons.red_pin}
+                        style={{
+                            width: 20,
+                            height: 20,
+                            marginRight: SIZES.padding
+                        }}
+                    />
+
+                    <View style={{ flex: 1 }}>
+                        <Text style={{ ...FONTS.body3 }}>{streetName}</Text>
+                    </View>
+
+                    <Text style={{ ...FONTS.body3 }}>{Math.ceil(duration)} mins</Text>
+                </View> */}
+
+
+                {/* functions */}
+                <TouchableOpacity
+                    style={{
+                        width: 60,
+                        height: 60,
+                        borderRadius: 30,
+                        backgroundColor: COLORS.white,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+
+                    }}
+                // onPress={() => zoomOut()}
+                >
+                    <View
+                        style={{
+                            height: 40,
+                            width: 40,
+                            borderRadius: 20,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: COLORS.white
+                        }}
+                    >
+                        <MaterialIcons name="report" size={24} color="black" />
+                    </View>
+                    {/* <Text style={{ ...FONTS.body1 }}>-</Text> */}
+                </TouchableOpacity>
+            </View >
+
+        )
+    }
+    function renderBottomButtons() {
+        return (
+            <View
+                style={{
+                    position: 'absolute',
+                    bottom: SIZES.height * 0.02,
+                    // right: SIZES.padding * 0.2,
+                    // left: SIZES.padding * 0.2,
+                    width: SIZES.width,
+                    height: 70,
+                    flexDirection: 'row',
+                    alignItems: 'baseline',
+                    justifyContent: 'space-around',
+                    // backgroundColor: COLORS.white,
+
+                }}
+            >
+                {/* chat */}
+                <TouchableOpacity
+                    style={{
+                        width: 60,
+                        height: 60,
+
+                        borderRadius: 30,
+                        backgroundColor: COLORS.white,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+
+                    }}
+                // onPress={() => zoomIn()}
+                >
+
+                    <View
+                        style={{
+                            height: 40,
+                            width: 40,
+                            borderRadius: 20,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: COLORS.white
+                        }}
+                    >
+                        <Ionicons name="chatbubble-ellipses-outline" size={30} color="black" />
+
+                    </View>
+                </TouchableOpacity>
+                {/* START*/}
+                <TouchableOpacity
+                    style={{
+                        width: 70,
+                        height: 70,
+                        borderRadius: 45,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: COLORS.white
+
+                    }}
+                // onPress={() => zoomIn()}
+                >
+                    <View
+                        style={{
+                            height: 50,
+                            width: 50,
+                            borderRadius: 30,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: COLORS.white
+                        }}
+                    >
+                        <Ionicons name="ios-bicycle-outline" size={40} color="black" />
+                    </View>
+                </TouchableOpacity>
+
+                {/* functions */}
+                <TouchableOpacity
+                    style={{
+                        width: 60,
+                        height: 60,
+                        borderRadius: 30,
+                        backgroundColor: COLORS.white,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+
+                    }}
+                // onPress={() => zoomOut()}
+                >
+                    <View
+                        style={{
+                            height: 40,
+                            width: 40,
+                            borderRadius: 20,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: COLORS.white
+                        }}
+                    >
+                        <Fontisto name="camera" size={24} color="black" />
+                    </View>
+                    {/* <Text style={{ ...FONTS.body1 }}>-</Text> */}
+                </TouchableOpacity>
+            </View>
+
+        )
+    }
+
+    return (
+        <View style={{ flex: 1 }}>
+            {renderMap()}
+            {renderUpperButtons()}
+            {/* {renderDestinationHeader()} */}
+            {renderBottomButtons()}
+            {riderSelected && renderDeliveryInfo(riderSelected)}
+        </View>
+    )
 }
 
 export default RideMap;
