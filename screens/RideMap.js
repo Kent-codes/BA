@@ -432,7 +432,7 @@ const RideMap = ({ route, navigation }) => {
 
                 {/* message*/}
                 {/* <View
-                    style={{
+                    style={{ 
                         flexDirection: 'row',
                         alignItems: 'center',
                         width: SIZES.width * 0.5,
