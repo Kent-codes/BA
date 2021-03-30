@@ -9,7 +9,10 @@ const Stack = createStackNavigator();
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      {/* hide a header */}
+      <Stack.Navigator screenOptions={{
+        headerShown: false
+      }}>
         <Stack.Screen name="Home" component={Tabs} />
         <Stack.Screen name="Restaurant" component={Restaurant} />
         <Stack.Screen name="RideMap" component={RideMap} />

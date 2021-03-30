@@ -9,6 +9,7 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 // import { MapView } from "expo";
 import MapViewDirections from "react-native-maps-directions";
 import { COLORS, FONTS, icons, SIZES, GOOGLE_API_KEY } from "../constants"
+//icons
 import { Ionicons } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -93,14 +94,22 @@ const RideMap = ({ route, navigation }) => {
     //     setRegion(newRegion)
     //     mapView.current.animateToRegion(newRegion, 200)
     // }
-
+    function onPressIcon(selectedId) {
+        if (riderSelected && riderSelected !== selectedId) {
+            setRiderSelected(selectedId)
+        } else if (riderSelected === selectedId) {
+            setRiderSelected(null)
+        } else {
+            setRiderSelected(selectedId)
+        }
+    }
     function renderMap() {
         const ridersMarker = () => (
             riderInfo?.map(el => (
 
                 <Marker
                     coordinate={el.location}
-                    onPress={() => !riderSelected ? setRiderSelected(el.id) : setRiderSelected(null)}
+                    onPress={() => onPressIcon(el.id)}
                 >
                     <View
                         style={{
@@ -166,8 +175,8 @@ const RideMap = ({ route, navigation }) => {
                             backgroundColor: COLORS.white
                         }}
                     > */}
-                        <MaterialIcons name="directions-bike" size={30} color="black" />
-                        {/* <Image
+                <MaterialIcons name="directions-bike" size={30} color="black" />
+                {/* <Image
                             source={myInfo?.icon.avatar}
                             style={{
                                 width: 35,
@@ -284,7 +293,7 @@ const RideMap = ({ route, navigation }) => {
             <View
                 style={{
                     position: 'absolute',
-                    bottom: 85,
+                    bottom: 90,
                     left: 0,
                     right: 0,
                     alignItems: 'center',
@@ -347,7 +356,7 @@ const RideMap = ({ route, navigation }) => {
                                 justifyContent: 'center',
                                 borderRadius: 10
                             }}
-                            onPress={() => navigation.navigate("Home")}
+                            // onPress={() => navigation.navigate("Home")}
                         >
                             <Text style={{ ...FONTS.h4, color: COLORS.white }}>Call</Text>
                         </TouchableOpacity>
@@ -375,11 +384,12 @@ const RideMap = ({ route, navigation }) => {
     }
 
     function renderUpperButtons() {
+
         return (
             <View
                 style={{
                     position: 'absolute',
-                    top: SIZES.height * 0.01,
+                    top: SIZES.height * 0.07,
                     // right: SIZES.padding * 0.2,
                     left: SIZES.padding * 1.7,
                     width: SIZES.width * 0.9,
@@ -391,7 +401,7 @@ const RideMap = ({ route, navigation }) => {
 
                 }}
             >
-                {/* chat */}
+                {/* back */}
                 <TouchableOpacity
                     style={{
                         width: 50,
@@ -450,13 +460,14 @@ const RideMap = ({ route, navigation }) => {
                 </View> */}
 
 
-                {/* functions */}
+                {/* emergency */}
                 <TouchableOpacity
                     style={{
-                        width: 60,
-                        height: 60,
+                        width: 50,
+                        height: 50,
                         borderRadius: 30,
                         backgroundColor: COLORS.white,
+                        // backgroundColor: COLORS."red",
                         alignItems: 'center',
                         justifyContent: 'center',
 
@@ -473,7 +484,7 @@ const RideMap = ({ route, navigation }) => {
                             backgroundColor: COLORS.white
                         }}
                     >
-                        <MaterialIcons name="report" size={24} color="black" />
+                        <MaterialIcons name="report" size={30} color="red" />
                     </View>
                     {/* <Text style={{ ...FONTS.body1 }}>-</Text> */}
                 </TouchableOpacity>
@@ -482,11 +493,15 @@ const RideMap = ({ route, navigation }) => {
         )
     }
     function renderBottomButtons() {
+        const logosize = 30;
+        const buttonsize = 63;
+        const borderRadius = 33;
+
         return (
             <View
                 style={{
                     position: 'absolute',
-                    bottom: SIZES.height * 0.02,
+                    bottom: SIZES.height * 0.03,
                     // right: SIZES.padding * 0.2,
                     // left: SIZES.padding * 0.2,
                     width: SIZES.width,
@@ -501,10 +516,9 @@ const RideMap = ({ route, navigation }) => {
                 {/* chat */}
                 <TouchableOpacity
                     style={{
-                        width: 60,
-                        height: 60,
-
-                        borderRadius: 30,
+                        width: buttonsize,
+                        height: buttonsize,
+                        borderRadius: borderRadius,
                         backgroundColor: COLORS.white,
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -515,24 +529,24 @@ const RideMap = ({ route, navigation }) => {
 
                     <View
                         style={{
-                            height: 40,
-                            width: 40,
+                            height: 45,
+                            width: 45,
                             borderRadius: 20,
                             alignItems: 'center',
                             justifyContent: 'center',
                             backgroundColor: COLORS.white
                         }}
                     >
-                        <Ionicons name="chatbubble-ellipses-outline" size={30} color="black" />
+                        <Ionicons name="chatbubble-ellipses-outline" size={35} color="black" />
 
                     </View>
                 </TouchableOpacity>
                 {/* START*/}
                 <TouchableOpacity
                     style={{
-                        width: 70,
-                        height: 70,
-                        borderRadius: 45,
+                        width: 73,
+                        height: 73,
+                        borderRadius: 43,
                         alignItems: 'center',
                         justifyContent: 'center',
                         backgroundColor: COLORS.white
@@ -557,9 +571,9 @@ const RideMap = ({ route, navigation }) => {
                 {/* functions */}
                 <TouchableOpacity
                     style={{
-                        width: 60,
-                        height: 60,
-                        borderRadius: 30,
+                        width: 63,
+                        height: 63,
+                        borderRadius: borderRadius,
                         backgroundColor: COLORS.white,
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -577,7 +591,7 @@ const RideMap = ({ route, navigation }) => {
                             backgroundColor: COLORS.white
                         }}
                     >
-                        <Fontisto name="camera" size={24} color="black" />
+                        <Fontisto name="camera" size={30} color="black" />
                     </View>
                     {/* <Text style={{ ...FONTS.body1 }}>-</Text> */}
                 </TouchableOpacity>
